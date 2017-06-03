@@ -1,7 +1,6 @@
 # StayFocusd Enforcer
 
-This hacky chrome extension enforces stayfocusd if you try to disabled it by
-closing its process in task manager
+This chrome extension enforces stayfocusd if you try to disabled it in chrome
+extension or closing its process in task manager
 
-However, this does not resolve the situation when you try to disable the
-extension completely
+This requires your chrome to have this flag enabled (chrome://flags/#extensions-on-chrome-urls)
