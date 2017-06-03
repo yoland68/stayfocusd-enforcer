@@ -13,8 +13,9 @@
       "persistent": false
   },
   "offline_enabled": true,
-  "permission": [
+  "permissions": [
      "activeTab",
-     "tabs"
+     "tabs",
+     "chrome://*/"
   ]
 }
