@@ -10,7 +10,7 @@
   },
   "background": {
       "scripts": ["js/background.js"],
-      "persistent": false
+      "persistent": true
   },
   "offline_enabled": true,
   "permissions": [

@@ -1,41 +1,46 @@
-function doIt() {
+function reloadSF() {
   const newUrl = "chrome-extension://laankejkbhbdhmipfmgcngdelahlfoji/options.html";
   chrome.tabs.create({ url: newUrl, active:false }, function(tab){
     chrome.tabs.remove(tab.id);
   });
 }
-setInterval(doIt, 1000*60*10);
 
-function EnableIt() {
+function enableExtensions() {
   const newUrl = "chrome://extensions-frame/";
   chrome.tabs.create({ url: newUrl, active:false }, function(tab){
-    chrome.tabs.executeScript(null, {code: `
-      (function() {
+    chrome.tabs.executeScript(tab.id, {code: `
+      setInterval(function() {
         const ids = [
           "laankejkbhbdhmipfmgcngdelahlfoji",
           "dbpndlofcgbjmnpinbmhligbinkdndcg"];
-        ids.forEach(function theFunc(id) {
+        let closeWindow = [];
+        ids.forEach(function theFunc(id, i) {
           if (!document.getElementById(id)) {
-            alart(id + " element is not found");
+            closeWindow[i] = false
           } else {
             const el = document.getElementById(id).getElementsByClassName(
                     "enable-text")[0];
             if (window.getComputedStyle(el).getPropertyValue("display") == "inline") {
                   el.click();
             }
+            closeWindow[i] = true
           }
         });
-      })();`,
-      runAt: "document_end", // Must run at the end of the document so element
-                             // in dom can be found
+        if (closeWindow.reduce((a,b) => a &&b)) {
+          window.close();
+        }
+      }, 50);`,
       allFrames: true
-    }, function(result) { 
-      setTimeout(function() {chrome.tabs.remove(tab.id)}, 100);
-    });
+    }, null);
   });
 };
 
+function Combined() {
+  enableExtensions();
+  setTimeout(reloadSF, 200);
+}
+
+setInterval(Combined, 1000*60*10);
 chrome.browserAction.onClicked.addListener(function(activeTab) {
-  EnableIt();
-  setTimeout(doIt, 200);
+  Combined();
 })
