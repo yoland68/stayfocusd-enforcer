@@ -49,7 +49,7 @@ function enableExtensions() {
       setInterval(function() {
         const ids = [
           "laankejkbhbdhmipfmgcngdelahlfoji",
-          "dbpndlofcgbjmnpinbmhligbinkdndcg"];
+          "hkpbllilogbchodhfhelfdlgcfgamcng"];
         let closeWindow = [];
         ids.forEach(function theFunc(id, i) {
           if (!document.getElementById(id)) {
@@ -66,7 +66,10 @@ function enableExtensions() {
         if (closeWindow.reduce((a,b) => a && b)) {
           window.close();
         }
-      }, 50);`,
+      }, 50);
+      setTimeout(function() {
+        window.close();
+      }, 200)`,
       allFrames: true
     }, null);
   });
