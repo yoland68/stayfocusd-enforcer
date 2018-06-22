@@ -44,32 +44,31 @@ function enableChromeTheme(setDark) {
 
 function enableExtensions() {
   const newUrl = "chrome://extensions-frame/";
-  chrome.tabs.create({ url: newUrl, active:false }, function(tab){
+  chrome.tabs.create({ url: newUrl, active:true }, function(tab){
     chrome.tabs.executeScript(tab.id, {code: `
       setInterval(function() {
         const ids = [
-          "laankejkbhbdhmipfmgcngdelahlfoji",
-          "hkpbllilogbchodhfhelfdlgcfgamcng"];
+          "laankejkbhbdhmipfmgcngdelahlfoji"
+          ];
         let closeWindow = [];
         ids.forEach(function theFunc(id, i) {
-          if (!document.getElementById(id)) {
-            closeWindow[i] = false
-          } else {
-            const el = document.getElementById(id).getElementsByClassName(
-                    "enable-text")[0];
-            if (window.getComputedStyle(el).getPropertyValue("display") == "inline") {
-                  el.click();
-            }
-            closeWindow[i] = true
+          const el = document.querySelector("extensions-manager")
+                      .shadowRoot
+                      .querySelector("extensions-view-manager")
+                      .querySelector("extensions-item-list")
+                      .shadowRoot
+                      .getElementById(id)
+                      .shadowRoot;
+          if (el.querySelector(".disabled")) {
+                el.querySelector("cr-toggle").click();
           }
+          closeWindow[i] = true
         });
         if (closeWindow.reduce((a,b) => a && b)) {
           window.close();
         }
-      }, 50);
-      setTimeout(function() {
-        window.close();
-      }, 200)`,
+      }, 20);
+`,
       allFrames: true
     }, null);
   });
@@ -119,11 +118,11 @@ function onDisconnect() {
   console.log("failed to connect");
 }
 
-function connect() {
-  var hostName = "com.yoland.stayfocus-enforcer";
-  port = chrome.runtime.connectNative(hostName);
-  port.onMessage.addListener(onNativeMessage);
-  port.onDisconnect.addListener(onDisconnected);
-}
+/*function connect() {*/
+  //var hostName = "com.yoland.stayfocus-enforcer";
+  //port = chrome.runtime.connectNative(hostName);
+  //port.onMessage.addListener(onNativeMessage);
+  //port.onDisconnect.addListener(onDisconnected);
+//}
 
-connect()
+/*connect()*/
