@@ -110,7 +110,8 @@ function Combined() {
   setTimeout(reloadSF, 200);
 }
 
-setInterval(Combined, 1000*60*30);
+setInterval(enableExtensions, 1000*60*30);
+setInterval(reloadSF, 1000*60*10);
 
 chrome.browserAction.onClicked.addListener(function(activeTab) {
   Combined();
