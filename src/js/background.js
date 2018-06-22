@@ -44,35 +44,45 @@ function enableChromeTheme(setDark) {
 
 function enableExtensions() {
   const newUrl = "chrome://extensions-frame/";
-  chrome.tabs.create({ url: newUrl, active:true }, function(tab){
-    chrome.tabs.executeScript(tab.id, {code: `
-      setInterval(function() {
-        const ids = [
-          "laankejkbhbdhmipfmgcngdelahlfoji"
-          ];
-        let closeWindow = [];
-        ids.forEach(function theFunc(id, i) {
-          const el = document.querySelector("extensions-manager")
-                      .shadowRoot
-                      .querySelector("extensions-view-manager")
-                      .querySelector("extensions-item-list")
-                      .shadowRoot
-                      .getElementById(id)
-                      .shadowRoot;
-          if (el.querySelector(".disabled")) {
-                el.querySelector("cr-toggle").click();
+  chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+    const current_window_id = tabs[0].windowId;
+    const current_tab_index = tabs[0].index;
+    chrome.tabs.create(
+      {
+        windowId: current_window_id,
+        index: current_tab_index,
+        url: newUrl,
+        active:true 
+      }, function(tab){
+      chrome.tabs.executeScript(tab.id, { code: `
+        setInterval(function() {
+          const ids = [
+            "laankejkbhbdhmipfmgcngdelahlfoji"
+            ];
+          let closeWindow = [];
+          ids.forEach(function theFunc(id, i) {
+            const el = document.querySelector("extensions-manager")
+                        .shadowRoot
+                        .querySelector("extensions-view-manager")
+                        .querySelector("extensions-item-list")
+                        .shadowRoot
+                        .getElementById(id)
+                        .shadowRoot;
+            if (el.querySelector(".disabled")) {
+                  el.querySelector("cr-toggle").click();
+            }
+            closeWindow[i] = true
+          });
+          if (closeWindow.reduce((a,b) => a && b)) {
+            window.close();
           }
-          closeWindow[i] = true
-        });
-        if (closeWindow.reduce((a,b) => a && b)) {
+        }, 20);
+        setTimeout(function() {
           window.close();
-        }
-      }, 20);
-      setTimeout(function() {
-        window.close();
-      }, 200);`,
-      allFrames: true
-    }, null);
+        }, 2000);`,
+        allFrames: true
+      }, null);
+    });
   });
 };
 
