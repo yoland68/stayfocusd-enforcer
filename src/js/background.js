@@ -68,7 +68,9 @@ function enableExtensions() {
           window.close();
         }
       }, 20);
-`,
+      setTimeout(function() {
+        window.close();
+      }, 200);`,
       allFrames: true
     }, null);
   });
@@ -98,7 +100,7 @@ function Combined() {
   setTimeout(reloadSF, 200);
 }
 
-setInterval(Combined, 1000*60*10);
+setInterval(Combined, 1000*60*30);
 
 chrome.browserAction.onClicked.addListener(function(activeTab) {
   Combined();
