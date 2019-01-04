@@ -63,7 +63,7 @@ function enableExtensions() {
           ids.forEach(function theFunc(id, i) {
             const el = document.querySelector("extensions-manager")
                         .shadowRoot
-                        .querySelector("extensions-view-manager")
+                        .querySelector("cr-view-manager")
                         .querySelector("extensions-item-list")
                         .shadowRoot
                         .getElementById(id)
@@ -79,7 +79,7 @@ function enableExtensions() {
         }, 20);
         setTimeout(function() {
           window.close();
-        }, 2000);`,
+        }, 6000);`,
         allFrames: true
       }, null);
     });
