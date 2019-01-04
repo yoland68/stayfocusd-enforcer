@@ -42,50 +42,6 @@ function enableChromeTheme(setDark) {
   }
 }
 
-function enableExtensions() {
-  const newUrl = "chrome://extensions-frame/";
-  chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
-    const current_window_id = tabs[0].windowId;
-    const current_tab_index = tabs[0].index;
-    chrome.tabs.create(
-      {
-        windowId: current_window_id,
-        index: current_tab_index,
-        url: newUrl,
-        active:true 
-      }, function(tab){
-      chrome.tabs.executeScript(tab.id, { code: `
-        setInterval(function() {
-          const ids = [
-            "laankejkbhbdhmipfmgcngdelahlfoji"
-            ];
-          let closeWindow = [];
-          ids.forEach(function theFunc(id, i) {
-            const el = document.querySelector("extensions-manager")
-                        .shadowRoot
-                        .querySelector("cr-view-manager")
-                        .querySelector("extensions-item-list")
-                        .shadowRoot
-                        .getElementById(id)
-                        .shadowRoot;
-            if (el.querySelector(".disabled")) {
-                  el.querySelector("cr-toggle").click();
-            }
-            closeWindow[i] = true
-          });
-          if (closeWindow.reduce((a,b) => a && b)) {
-            window.close();
-          }
-        }, 20);
-        setTimeout(function() {
-          window.close();
-        }, 6000);`,
-        allFrames: true
-      }, null);
-    });
-  });
-};
-
 function sendFinishJobNotification(success, info) {
   const iconUrl = success ? 'icons/thumb_up.png' : 'icons/thumb_down.png';
   chrome.notifications.create("jobFinished", {
@@ -106,11 +62,9 @@ function connect() {
 }
 
 function Combined() {
-  enableExtensions();
-  setTimeout(reloadSF, 200);
+  reloadSF();
 }
 
-setInterval(enableExtensions, 1000*60*30);
 setInterval(reloadSF, 1000*60*10);
 
 chrome.browserAction.onClicked.addListener(function(activeTab) {
