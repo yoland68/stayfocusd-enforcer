@@ -8,6 +8,15 @@ function removeAgars() {
   });
 }
 
+function removeVerge() {
+  chrome.tabs.query({url: "http://theverge.com/*"}, function(tabArr) {
+    tabArr.forEach(function(tab) {
+      chrome.tabs.remove(tab.id);
+    });
+  });
+}
+
+
 function reloadSF() {
   const newUrl = "chrome-extension://laankejkbhbdhmipfmgcngdelahlfoji/options.html";
   chrome.tabs.create({ url: newUrl, active:false }, function(tab){
@@ -66,6 +75,7 @@ function Combined() {
 }
 
 setInterval(reloadSF, 1000*60*10);
+setInterval(removeVerge, 1000*60*5);
 
 chrome.browserAction.onClicked.addListener(function(activeTab) {
   Combined();
