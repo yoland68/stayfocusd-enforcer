@@ -15,7 +15,10 @@
   "offline_enabled": true,
   "permissions": [
      "activeTab",
+     "alarms",
      "tabs",
+     "notifications",
+     "storage",
      "management"
   ]
 }

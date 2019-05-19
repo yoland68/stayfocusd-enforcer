@@ -8,14 +8,23 @@ function removeAgars() {
   });
 }
 
-function removeVerge() {
-  chrome.tabs.query({url: "http://theverge.com/*"}, function(tabArr) {
-    tabArr.forEach(function(tab) {
-      chrome.tabs.remove(tab.id);
-    });
-  });
+function removeDistractingSites() {                                             
+  chrome.tabs.query(                                                            
+      {                                                                         
+        url: [                                                                  
+          'http://arstechnica.com/*',                                           
+          'https://memegen.googleplex.com/*',                                   
+          'https://arstechnica.com/*',                                          
+          'https://www.theverge.com/*',                                         
+          'https://techcrunch.com/*',                                           
+        ]                                                                       
+      },                                                                        
+      function(tabArr) {                                                        
+        tabArr.forEach(function(tab) {                                          
+          chrome.tabs.remove(tab.id);                                           
+        });                                                                        
+      });                                                                          
 }
-
 
 function reloadSF() {
   const newUrl = "chrome-extension://laankejkbhbdhmipfmgcngdelahlfoji/options.html";
@@ -72,10 +81,11 @@ function connect() {
 
 function Combined() {
   reloadSF();
+  removeDistractingSites();
 }
 
 setInterval(reloadSF, 1000*60*10);
-setInterval(removeVerge, 1000*60*5);
+setInterval(removeDistractingSites, 1000*60*5);
 
 chrome.browserAction.onClicked.addListener(function(activeTab) {
   Combined();
