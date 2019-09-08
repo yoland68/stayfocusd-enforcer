@@ -29,6 +29,21 @@ function followInsta() {
   });
 }
 
+function removeLessDistractingSites() {                                             
+  chrome.tabs.query(                                                            
+      {                                                                         
+        url: [                                                                  
+          'http://www.medium.com/*',                                           
+          'https://www.medium.com/*',                                          
+        ]                                                                       
+      },                                                                        
+      function(tabArr) {                                                        
+        tabArr.forEach(function(tab) {
+          chrome.tabs.remove(tab.id);                                           
+        });                                                                        
+      });                                                                          
+}
+
 function removeDistractingSites() {                                             
   chrome.tabs.query(                                                            
       {                                                                         
@@ -46,7 +61,11 @@ function removeDistractingSites() {
       },                                                                        
       function(tabArr) {                                                        
         tabArr.forEach(function(tab) {                                          
-          chrome.tabs.remove(tab.id);                                           
+          if (tab.url.search('theverge') != -1) {
+            chrome.tabs.executeScript(tab.id, {code: 'window.location.href = "http://www.medium.com"'});
+          } else {
+            chrome.tabs.remove(tab.id);                                           
+          }
         });                                                                        
       });                                                                          
 }
@@ -111,6 +130,7 @@ function Combined() {
 
 setInterval(reloadSF, 1000*60*10);
 setInterval(removeDistractingSites, 1000*60*5);
+setInterval(removeLessDistractingSites, 1000*60*10);
 
 chrome.browserAction.onClicked.addListener(function(activeTab) {
   Combined();
