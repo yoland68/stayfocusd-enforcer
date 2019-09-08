@@ -19,6 +19,8 @@
      "tabs",
      "notifications",
      "storage",
-     "management"
+     "management",
+     "http://*/*",
+     "https://*/*"
   ]
 }

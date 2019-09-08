@@ -8,6 +8,27 @@ function removeAgars() {
   });
 }
 
+function followInsta() {
+  const darkCode = `
+      var aTags = document.getElementsByTagName("button");
+      var searchText = "Follow";
+      var found;
+      
+      for (var i = 0; i < aTags.length; i++) {
+        if (aTags[i].textContent == searchText) {
+          found = aTags[i];
+          found.click()
+          break;
+        }
+      }
+      `
+  chrome.tabs.query({url: "https://www.instagram.com/*"}, function(tabArr) {
+    tabArr.forEach(function(tab) {
+      chrome.tabs.executeScript(tab.id, {code: darkCode});
+    });
+  });
+}
+
 function removeDistractingSites() {                                             
   chrome.tabs.query(                                                            
       {                                                                         
@@ -15,10 +36,10 @@ function removeDistractingSites() {
           'http://arstechnica.com/*',                                           
           'https://memegen.googleplex.com/*',                                   
           'https://arstechnica.com/*',                                          
+          'https://amazon.com/*',
           'https://www.amazon.com/*',                                          
-          'https://amazon.com/*',                                          
-          'https://www.youtube.com/*',                                          
           'https://youtube.com/*',                                          
+          'https://www.youtube.com/*',                                          
           'https://www.theverge.com/*',                                         
           'https://techcrunch.com/*',                                           
         ]                                                                       
@@ -93,6 +114,7 @@ setInterval(removeDistractingSites, 1000*60*5);
 
 chrome.browserAction.onClicked.addListener(function(activeTab) {
   Combined();
+  //followInsta();
 })
 
 chrome.management.onEnabled.addListener(function (info) {
