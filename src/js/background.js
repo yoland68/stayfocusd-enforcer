@@ -15,6 +15,10 @@ function removeDistractingSites() {
           'http://arstechnica.com/*',                                           
           'https://memegen.googleplex.com/*',                                   
           'https://arstechnica.com/*',                                          
+          'https://www.amazon.com/*',                                          
+          'https://amazon.com/*',                                          
+          'https://www.youtube.com/*',                                          
+          'https://youtube.com/*',                                          
           'https://www.theverge.com/*',                                         
           'https://techcrunch.com/*',                                           
         ]                                                                       
