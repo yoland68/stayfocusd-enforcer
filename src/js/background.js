@@ -13,7 +13,7 @@ function followInsta() {
       var aTags = document.getElementsByTagName("button");
       var searchText = "Follow";
       var found;
-      
+
       for (var i = 0; i < aTags.length; i++) {
         if (aTags[i].textContent == searchText) {
           found = aTags[i];
@@ -29,45 +29,57 @@ function followInsta() {
   });
 }
 
-function removeLessDistractingSites() {                                             
-  chrome.tabs.query(                                                            
-      {                                                                         
-        url: [                                                                  
-          'http://www.medium.com/*',                                           
-          'https://www.medium.com/*',                                          
-        ]                                                                       
-      },                                                                        
-      function(tabArr) {                                                        
+function removeLessDistractingSites() {
+  chrome.tabs.query(
+      {
+        url: [
+          'http://*.medium.com/*',
+          'https://*.medium.com/*',
+          'http://medium.com/*',
+          'https://medium.com/*',
+        ]
+      },
+      function(tabArr) {
+        var counter = 0;
         tabArr.forEach(function(tab) {
-          chrome.tabs.remove(tab.id);                                           
-        });                                                                        
-      });                                                                          
+          if (counter == 0) {
+            if (Math.random() > 0.5) {
+              chrome.tabs.executeScript(tab.id, {code: 'window.location.href = "https://trello.com/b/Hbq6RVTJ/temp"'});
+            } else {
+              chrome.tabs.executeScript(tab.id, {code: 'window.location.href = "https://trello.com/b/UraDUriM/secondary"'});
+            }
+          } else {
+            chrome.tabs.remove(tab.id);
+          }
+          counter++;
+        });
+      });
 }
 
-function removeDistractingSites() {                                             
-  chrome.tabs.query(                                                            
-      {                                                                         
-        url: [                                                                  
-          'http://arstechnica.com/*',                                           
-          'https://memegen.googleplex.com/*',                                   
-          'https://arstechnica.com/*',                                          
+function removeDistractingSites() {
+  chrome.tabs.query(
+      {
+        url: [
+          'http://arstechnica.com/*',
+          'https://memegen.googleplex.com/*',
+          'https://arstechnica.com/*',
           'https://amazon.com/*',
-          'https://www.amazon.com/*',                                          
-          'https://youtube.com/*',                                          
-          'https://www.youtube.com/*',                                          
-          'https://www.theverge.com/*',                                         
-          'https://techcrunch.com/*',                                           
-        ]                                                                       
-      },                                                                        
-      function(tabArr) {                                                        
-        tabArr.forEach(function(tab) {                                          
+          'https://www.amazon.com/*',
+          'https://youtube.com/*',
+          'https://www.youtube.com/*',
+          'https://www.theverge.com/*',
+          'https://techcrunch.com/*',
+        ]
+      },
+      function(tabArr) {
+        tabArr.forEach(function(tab) {
           if (tab.url.search('theverge') != -1) {
             chrome.tabs.executeScript(tab.id, {code: 'window.location.href = "http://www.medium.com"'});
           } else {
-            chrome.tabs.remove(tab.id);                                           
+            chrome.tabs.remove(tab.id);
           }
-        });                                                                        
-      });                                                                          
+        });
+      });
 }
 
 function reloadSF() {
@@ -126,6 +138,7 @@ function connect() {
 function Combined() {
   reloadSF();
   removeDistractingSites();
+  removeLessDistractingSites();
 }
 
 setInterval(reloadSF, 1000*60*10);
